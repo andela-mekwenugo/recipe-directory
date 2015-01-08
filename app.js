@@ -1,81 +1,36 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+
+// //database connection to mongodb via mongoose
+// var dbURI = 'mongodb://localhost/recipeDirectory';
+// mongoose.connect(dbURI);
+// var db = mongoose.connection
+
+// //outputs message to console, depending on connection status
+// db.on('error', console.error.bind(console, 'connection error: '));
+// db.once('connected', function() {
+//   console.log('Mongoose connected to ' + dbURI);
+// })
+
+// //app database model
+// var recipesSchema = mongoose.Schema({
+//   name: String,
+//   Cuisine: String,
+//   Equipments: [String],
+//   ingredients: [String],
+//   method: [String]
+// });
 
 var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
 
+
 // dommy data
-var recipesList = [
-{
-  "name":"salad",
-  "id" : "1",
-  "description" : "Made with carrot and cabbage"
-},
+var routes = require('./routes/recipes');
 
-{
-  "name" : "beans",
-  "id" : "2",
-  "description": "Very high in protein"
-},
+app.use("/recipes", routes);
 
-{
-  "name" : "stew",
-  "id" : "3",
-  "description" : "Mainly used to eat rice"
-},
-
-{
-  "name" : "pizza",
-  "id" : "4",
-  "description" : "Round bread garnished with vegetables and cheese"
-}, 
-
-{
-  "name" : "rice",
-  "id" : "5",
-  "description" : "Very high in protein"
-}]
-
-//created app router
-var router = express.Router();
-router
-  .get("/", function(request,response) {
-    response.status(200).json(recipesList);
-
-  })
-
-  .post("/", function(request, response) {
-    var newRecipe = request.body;
-    recipesList.push(newRecipe);
-    response.status(201).json(recipesList);
-
-  })
-
-  .put("/:id/edit", function(request, response) {
-    for(var i = 0; i < recipesList.length; i++) {
-      if (request.params.id === recipesList[i].id) {
-        recipesList[i].name = request.body.name;
-        recipesList[i].description = request.body.description;
-        break;
-      } else {
-        response.send("Not a recipe");
-      }
-    };
-    response.status(200).json(recipesList);
-  })
-
-  .delete("/:id/delete", function(request, response) {
-    for(var i = 0; i < recipesList.length; i++) {
-      if (request.params.id === recipesList[i].id) {
-        recipesList.splice(i,1);
-        break;
-      }
-    };
-      response.status(200).json(recipesList);
-  });
-
-app.use("/recipes", router);
-
-app.listen(419, function() {
-  console.log("Listening on port 419");
+app.listen(3000, function() {
+  console.log("Listening on port 3000");
 });
