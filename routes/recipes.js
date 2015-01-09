@@ -30,14 +30,14 @@ router.route('/recipes')
 
   })
   .post(function(request, response) {
-    if (!request.body.name || !request.body.equipments || !request.body.ingredients || !request.body.method) {
-      sendResponse(response, 400, "name, equipments, ingredients and method fields are required and cannot be empty")
+    if (!request.body.name || !request.body.equipment || !request.body.ingredient || !request.body.method) {
+      sendResponse(response, 400, "name, equipment, ingredient and method fields are required and cannot be empty")
     }
     var newRecipe = {
         name: request.body.name,
         cuisine: request.body.cuisine,
-        equipments: trimSpaces(request.body.equipments),
-        ingredients: trimSpaces(request.body.ingredients),
+        equipment: trimSpaces(request.body.equipment),
+        ingredient: trimSpaces(request.body.ingredient),
         method: trimSpaces(request.body.method)
       }
     Recipe.create(newRecipe, function(err, newRecipes) {
@@ -54,8 +54,8 @@ router
       .exec(function(err, recipes) {
           recipes.name = request.body.name || recipes.name;
           recipes.cuisine = request.body.cuisine || recipes.cuisine;
-          recipes.equipments = request.body.equipments || recipes.equipments;
-          recipes.ingredients = request.body.ingredients || recipes.ingredients;
+          recipes.equipment = request.body.equipment || recipes.equipment;
+          recipes.ingredient = request.body.ingredient || recipes.ingredient;
           recipes.method = request.body.method || recipes.method;
           recipes.save();
           sendResponse(response, 200, recipes);
