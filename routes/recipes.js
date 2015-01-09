@@ -83,6 +83,17 @@ router.route('/recipe/:id/delete')
         sendResponse(response, 200, "deleted successfully")
       });
   });
+router.route('/recipe/:id')
+  .get(function(request, response) {
+    Recipe
+      .findById(request.params.id)
+      .exec(function(err, recipe) {
+        if (err) {
+          sendResponse(response, 404, err);
+        }
+        sendResponse(response, 200, recipe);
+      })
+  })
 
 //exports router to app.js
 module.exports = router
