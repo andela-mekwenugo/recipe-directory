@@ -59,6 +59,4 @@ method: **optional**, several methods are seperated by comma
 
 ##Developers
 
-![Mirabel Ekwenugo](https://avatars2.githubusercontent.com/u/9656531?v=3&s=460 "Mirabel Ekwenugo")
-
-![Abimbola Idowu](https://avatars2.githubusercontent.com/u/9654923?v=3&s=460 "Abimbola Idowu")
+<img src="https://avatars2.githubusercontent.com/u/9656531" alt="Mirabel Ekwenugo" width="200px" title="Mirabel Ekwenugo" /> <img src="https://avatars2.githubusercontent.com/u/9654923" alt="Abimbola Idowu" width="200px" title="Abimbola Idowu" />
