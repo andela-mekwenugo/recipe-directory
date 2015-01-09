@@ -3,10 +3,13 @@ var mongoose = require('mongoose');
 require('../models/db');
 var Recipe = mongoose.model('Recipe');
 
+//sends response to client
 var sendResponse = function(response, status, data) {
   response.status(status);
   response.json(data);
 }
+
+//trims whitespaces from client data
 var trimSpaces = function(data) {
   var data = data
   data = data.replace(/(^ +)/, "");
@@ -14,13 +17,17 @@ var trimSpaces = function(data) {
   data = data.replace(/(, )/g, ",");
   return splitData(data);
 }
+
+//split data in array as required by database
 var splitData = function(data) {
   return data.split(",");
 }
 //created app router
 var router = express.Router();
 
+//define api route
 router.route('/recipes')
+  //base_URL/api/recipes , METHOD=get
   .get(function(request,response) {
     Recipe
       .find(function(err, recipes) {
@@ -49,8 +56,10 @@ router.route('/recipes')
       sendResponse(response, 201, newRecipe);
     })
   });
-router
-  .put('recipe/:id/edit',function(request, response) {
+
+router.route('/recipe/:id/edit')
+  //base_URL/api/recipe/id/edit , METHOD=put
+  .put(function(request, response) {
     Recipe
       .findById(request.params.id)
       .exec(function(err, recipes) {
@@ -63,14 +72,17 @@ router
           sendResponse(response, 200, recipes);
       })
     })
-  .delete('recipe/:id/delete',function(request, response) {
+  //base_URL/api/recipe/id/delete , METHOD=delete
+router.route('/recipe/:id/delete')
+  .delete(function(request, response) {
     Recipe
-      .findOneAndRemove({id:request.params.id}, function(err) {
+      .findOneAndRemove({'_id': request.params.id}, function(err) {
         if(err) {
           sendResponse(response, 404, err);
         }
-        sendResponse(response, 204, "deleted successfully")
+        sendResponse(response, 200, "deleted successfully")
       });
   });
 
+//exports router to app.js
 module.exports = router
