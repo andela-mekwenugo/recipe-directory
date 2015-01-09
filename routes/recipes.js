@@ -36,8 +36,8 @@ router.route('/recipes')
       sendResponse(response, 400, "name, equipment, ingredient and method fields are required and cannot be empty")
     }
     var newRecipe = {
-        name: request.body.name,
-        cuisine: request.body.cuisine,
+        name: trimSpaces(request.body.name),
+        cuisine: trimSpaces(request.body.cuisine),
         equipment: trimSpaces(request.body.equipment),
         ingredient: trimSpaces(request.body.ingredient),
         method: trimSpaces(request.body.method)
@@ -54,11 +54,11 @@ router
     Recipe
       .findById(request.params.id)
       .exec(function(err, recipes) {
-          recipes.name = request.body.name || recipes.name;
-          recipes.cuisine = request.body.cuisine || recipes.cuisine;
-          recipes.equipment = request.body.equipment || recipes.equipment;
-          recipes.ingredient = request.body.ingredient || recipes.ingredient;
-          recipes.method = request.body.method || recipes.method;
+          recipes.name = trimSpaces(request.body.name) || recipes.name;
+          recipes.cuisine = trimSpaces(request.body.cuisine) || recipes.cuisine;
+          recipes.equipment = trimSpaces(request.body.equipment) || recipes.equipment;
+          recipes.ingredient = trimSpaces(request.body.ingredient) || recipes.ingredient;
+          recipes.method = trimSpaces(request.body.method) || recipes.method;
           recipes.save();
           sendResponse(response, 200, recipes);
       })
