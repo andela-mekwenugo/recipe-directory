@@ -4,8 +4,11 @@ var mongoose = require('mongoose');
 
 var app = express();
 app.use(bodyParser.urlencoded({extended:false}));
-app.set('port', process.env.PORT || 3000);
+app.set('port', (process.env.PORT || 3000));
 
+app.get('/', function(req, res) {
+  res.render("gotten to home page");
+})
 // dommy data
 var routes = require('./routes/recipes');
 app.use("/api", routes);

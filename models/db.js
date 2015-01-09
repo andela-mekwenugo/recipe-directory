@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 
 var dbURI = 'mongodb://localhost/recipeDirectory';
-if (process.envNODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'production') {
   dbURI = 'mongodb://heroku_app33124305:aedrr86aent2ck11mdt3ckd1fg@ds031681.mongolab.com:31681/heroku_app33124305';
 }
 mongoose.connect(dbURI);
