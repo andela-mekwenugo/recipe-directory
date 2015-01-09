@@ -23,35 +23,49 @@ If you have any problem or requests, please contact either [Abimbola](mailto:abi
 **To get all recipes**
 
 > Method: "GET"
+
 > /recipes
 
 **To get a single recipe**
 
 > Method: "GET"
+
 > /recipe/id
 
 ###Post Recipes
 
 > Method: "POST"
->/recipes
+
+> /recipes
 
 fields accepted in post
+
 name: **required**
+
 cuisine: **optional**
+
 equipment: **required**, several equipments are seperated by comma
+
 ingredient: **required**, several ingredients are seperated by comma
+
 method: **required**, several methods are seperated by comma
 
 ###Edit a recipe
 
 > Method: "PUT"
+
 > /recipe/id/edit
 
 fields accepted in post
+
 name: **optional**
+
 cuisine: **optional**
+
 equipment: **optional**, several equipments are seperated by comma
+
 ingredient: **optional**, several ingredients are seperated by comma
+
 method: **optional**, several methods are seperated by comma
 
 
