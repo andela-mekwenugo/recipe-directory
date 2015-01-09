@@ -3,96 +3,72 @@ var mongoose = require('mongoose');
 require('../models/db');
 var Recipe = mongoose.model('Recipe');
 
+var sendResponse = function(response, status, data) {
+  response.status(status);
+  response.json(data);
+}
+var trimSpaces = function(data) {
+  var data = data
+  data = data.replace(/ /g, "");
+  return splitData(data);
+}
+var splitData = function(data) {
+  return data.split(",");
+}
 //created app router
 var router = express.Router();
-router
-  .get("/", function(request,response) {
+
+router.route('/recipes')
+  .get(function(request,response) {
     Recipe
       .find(function(err, recipes) {
         if(err) {
-          response.status(404).json(err);
+          sendResponse(response, 404, err);
         }
-        response.json(recipes)
+        sendResponse(response, 200, recipes);
       });
-      // .exec(function(err, recipes) {
-      //   if (err) {
-      //     response.status(404).json("can't get recipes");
-      //   }
-      //   response.status(200)
-      //   response.json(recipes)
-      // });
 
   })
-
-  .post('/', function(request, response) {
+  .post(function(request, response) {
+    if (!request.body.name || !request.body.equipments || !request.body.ingredients || !request.body.method) {
+      sendResponse(response, 400, "name, equipments, ingredients and method fields are required and cannot be empty")
+    }
     var newRecipe = {
         name: request.body.name,
         cuisine: request.body.cuisine,
-        equipments: request.body.equipments,
-        ingredients: request.body.ingredients,
-        method: request.body.method
+        equipments: trimSpaces(request.body.equipments),
+        ingredients: trimSpaces(request.body.ingredients),
+        method: trimSpaces(request.body.method)
       }
     Recipe.create(newRecipe, function(err, newRecipes) {
       if(err) {
-        return handleError(err)
+        sendResponse(response, 404, err);
       }
-      response.status(201).json(newRecipe)
+      sendResponse(response, 201, newRecipe);
     })
-  })
-
-  // .post("/", function(request, response) {
-  //   var newRecipe = request.body;
-  //   recipesList.push(newRecipe);
-  //   response.status(201).json(recipesList);
-
-  // })
-
-  .put('/edit/:id',function(request, response) {
+  });
+router
+  .put('recipe/:id/edit',function(request, response) {
     Recipe
       .findById(request.params.id)
       .exec(function(err, recipes) {
-          recipes.name = request.body.name;
-          recipes.cuisine = request.body.cuisine;
-          recipes.equipments = request.body.equipments;
-          recipes.ingredients = request.body.ingredients;
-          recipes.method = request.body.method;
+          recipes.name = request.body.name || recipes.name;
+          recipes.cuisine = request.body.cuisine || recipes.cuisine;
+          recipes.equipments = request.body.equipments || recipes.equipments;
+          recipes.ingredients = request.body.ingredients || recipes.ingredients;
+          recipes.method = request.body.method || recipes.method;
           recipes.save();
-          response.status(200).json(recipes)
+          sendResponse(response, 200, recipes);
       })
-  })
-
-  // .put("/:id/edit", function(request, response) {
-  //   for(var i = 0; i < recipesList.length; i++) {
-  //     if (request.params.id === recipesList[i].id) {
-  //       recipesList[i].name = request.body.name;
-  //       recipesList[i].description = request.body.description;
-  //       break;
-  //     } else {
-  //       response.send("Not a recipe");
-  //     }
-  //   };
-  //   response.status(200).json(recipesList);
-  // })
-
-
-  .delete('/delete/:id',function(request, response) {
+    })
+  .delete('recipe/:id/delete',function(request, response) {
     Recipe
       .findOneAndRemove({id:request.params.id}, function(err) {
         if(err) {
-          response.send(err);
+          sendResponse(response, 404, err);
         }
-        response.send("deleted!");
+        sendResponse(response, 204, "deleted successfully")
       });
   });
 
-  // .delete("/:id/delete", function(request, response) {
-  //   for(var i = 0; i < recipesList.length; i++) {
-  //     if (request.params.id === recipesList[i].id) {
-  //       recipesList.splice(i,1);
-  //       break;
-  //     }
-  //   };
-  //     response.status(200).json(recipesList);
-  // });
-
-  module.exports = router
+module.exports = router
