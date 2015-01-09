@@ -17,8 +17,8 @@ db.once('connected', function() {
 var recipesSchema = mongoose.Schema({
   name: {type: String, required: true, trim: true},
   cuisine: {type: String, trim: true},
-  equipments: {type: [String], required: true, trim: true},
-  ingredients: {type: [String], required: true, trim: true},
+  equipment: {type: [String], required: true, trim: true},
+  ingredient: {type: [String], required: true, trim: true},
   method: {type: [String], required: true, trim: true}
 });
 
