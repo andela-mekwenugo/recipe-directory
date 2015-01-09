@@ -9,7 +9,8 @@ var sendResponse = function(response, status, data) {
 }
 var trimSpaces = function(data) {
   var data = data
-  data = data.replace(/ /g, "");
+  data = data.replace(/(^ +)/, "");
+  data = data.replace(/( +$)/g, "");
   return splitData(data);
 }
 var splitData = function(data) {
